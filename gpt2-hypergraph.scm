@@ -121,7 +121,7 @@
   "Create attention hyperedge connecting tokens with A000081 tree structure"
   (let* ((seq-len (length tokens))
          (tree-size (min seq-len 10)) ; limit tree size for efficiency
-         (attention-tree (car (generate-trees-of-size tree-size 1)))
+         (attention-tree (make-rooted-tree tree-size '()))
          (edge-id (format #f "attn_L~a_H~a" layer-idx head-idx)))
     (make-hypergraph-edge
      edge-id
@@ -163,7 +163,7 @@
 (define (create-ffn-hyperedge tokens layer-idx embed-dim)
   "Create feed-forward network hyperedge with A000081 structure"
   (let* ((ffn-tree-size (a000081-nth (min (+ layer-idx 3) 10)))
-         (ffn-tree (car (generate-trees-of-size ffn-tree-size 1)))
+         (ffn-tree (make-rooted-tree ffn-tree-size '()))
          (edge-id (format #f "ffn_L~a" layer-idx)))
     (make-hypergraph-edge
      edge-id
