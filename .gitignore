@@ -1,0 +1,21 @@
+# Guile compiled files
+*.go
+.cache/
+
+# Test logs
+*.log
+
+# Temporary files
+*~
+\#*\#
+.\#*
+
+# Build artifacts
+*.o
+*.so
+*.a
+
+# Editor files
+.DS_Store
+*.swp
+*.swo

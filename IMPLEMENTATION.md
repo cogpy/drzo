@@ -2,10 +2,24 @@
 
 This repository implements the mathematical formulas from the problem statement in GNU Guile Scheme.
 
+## 🌲 NEW: Ontogenesis of Roots
+
+**Generate actual rooted tree structures** as recursive distinctions! See [ONTOGENESIS.md](ONTOGENESIS.md) for details.
+
+```bash
+# Run the ontogenesis demonstration
+guile -s ontogenesis.scm
+
+# Run tests
+guile -s test-ontogenesis.scm
+```
+
 ## Files Overview
 
 ### Core Implementation
 - **`a000081.scm`** - Core A000081 sequence implementation with recursive formula
+- **`ontogenesis.scm`** - 🆕 Rooted tree generation (ontogenesis)
+- **`test-ontogenesis.scm`** - 🆕 Comprehensive test suite for tree generation
 - **`advanced-structures.scm`** - Advanced mathematical structures (B-series, J-surfaces, etc.)
 - **`simple-demo.scm`** - Simple demonstration of core functionality
 - **`ghost-in-guile.scm`** - Complete comprehensive demonstration (work in progress)
@@ -13,6 +27,7 @@ This repository implements the mathematical formulas from the problem statement 
 ### Documentation
 - **`README.md`** - Original mathematical formulation
 - **`A000081.md`** - Extended mathematical documentation
+- **`ONTOGENESIS.md`** - 🆕 Complete guide to rooted tree generation
 - **`IMPLEMENTATION.md`** - This implementation guide
 
 ## Running the Code
@@ -27,6 +42,9 @@ sudo apt install guile-3.0
 ```bash
 # Run core A000081 implementation
 guile -s a000081.scm
+
+# Run ontogenesis (tree generation)
+guile -s ontogenesis.scm
 
 # Run simple demo with beautiful output
 guile -s simple-demo.scm
@@ -49,7 +67,58 @@ guile
 
 # Evaluate generating function
 (generating-function-coeffs 0.1 20)  ; A(0.1) ≈ 0.112516
+
+# Load ontogenesis for tree generation
+(load "ontogenesis.scm")
+
+# Generate all trees with n nodes
+(generate-trees 3)   ; Returns: (() (()()))
+
+# Tree operations
+(tree-size '(()())) ; => 3
+(tree-height '(()())) ; => 1
+(tree-width '(()())) ; => 2
+
+# Display trees
+(display-trees-for-n 4)  ; Shows all 4-node trees
 ```
+
+## Ontogenesis: Rooted Tree Generation
+
+The `ontogenesis.scm` module implements **actual tree generation**—not just counting trees, but generating their structures as S-expressions.
+
+### Key Concepts
+
+**Rooted Trees as S-expressions:**
+```scheme
+()           ; Single node
+(())         ; Root with one child
+(()())       ; Root with two children
+((()))       ; Linear chain
+```
+
+**Generation Algorithm:**
+1. Partition n-1 nodes among subtrees
+2. Recursively generate trees for each partition part
+3. Combine using multiset combinations
+4. Canonicalize to ensure uniqueness
+
+### Examples
+
+```scheme
+; Generate all 4-node trees
+(define trees (generate-trees 4))
+; => (()()) ((()()))  (()(()))  (()()())
+
+; Get tree statistics
+(map tree-height trees)  ; => (3 2 2 1)
+(map tree-width trees)   ; => (1 1 2 3)
+
+; Verify correctness
+(length (generate-trees 5))  ; => 9 (matches A000081)
+```
+
+See [ONTOGENESIS.md](ONTOGENESIS.md) for complete documentation.
 
 ## Mathematical Formulas Implemented
 
