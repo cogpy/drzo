@@ -1,0 +1,40 @@
+%%%% Starting test quick
+Group begin: quick
+Test begin:
+  source-line: 1
+  source-form: (test-equal 1 (tree-size (quote ())))
+Test end:
+  result-kind: pass
+  actual-value: 1
+  expected-value: 1
+Test begin:
+  source-line: 1
+  source-form: (test-equal 2 (tree-size (quote (()))))
+Test end:
+  result-kind: pass
+  actual-value: 2
+  expected-value: 2
+Test begin:
+  source-line: 1
+  source-form: (test-equal 3 (tree-size (quote (((()))))))
+Test end:
+  result-kind: fail
+  actual-value: 4
+  expected-value: 3
+Test begin:
+  source-line: 1
+  source-form: (test-equal 3 (tree-size (quote (() ()))))
+Test end:
+  result-kind: pass
+  actual-value: 3
+  expected-value: 3
+Test begin:
+  source-line: 1
+  source-form: (test-equal 9 (length (generate-trees 5)))
+Test end:
+  result-kind: pass
+  actual-value: 9
+  expected-value: 9
+Group end: quick
+# of expected passes      4
+# of unexpected failures  1

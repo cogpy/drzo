@@ -221,6 +221,37 @@
               (loop (cdr trees) (cons tree seen)))))))
 
 ;;; =============================================================================
+;;; Tree Operations
+;;; =============================================================================
+
+(define (tree-height tree)
+  "Calculate the height of a tree (longest path from root to leaf)"
+  (if (null? tree)
+      0
+      (+ 1 (apply max (cons 0 (map tree-height tree))))))
+
+(define (tree-width tree)
+  "Calculate the width of a tree (number of immediate children)"
+  (length tree))
+
+(define (tree-leaves tree)
+  "Count the number of leaves in a tree"
+  (if (null? tree)
+      1  ; A single node is a leaf
+      (apply + (map tree-leaves tree))))
+
+(define (tree-internal-nodes tree)
+  "Count internal (non-leaf) nodes"
+  (- (tree-size tree) (tree-leaves tree)))
+
+(define (tree-degree tree)
+  "Maximum degree (number of children) in the tree"
+  (if (null? tree)
+      0
+      (max (length tree)
+           (apply max (cons 0 (map tree-degree tree))))))
+
+;;; =============================================================================
 ;;; Display and Formatting
 ;;; =============================================================================
 
@@ -230,9 +261,28 @@
       "()"
       (format #f "(~{~a~})" (map tree->string tree))))
 
+(define (tree->lisp-form tree)
+  "Convert tree to readable Lisp-like form with labels"
+  (define (helper tree depth)
+    (if (null? tree)
+        "leaf"
+        (format #f "(node~{ ~a~})" 
+                (map (lambda (t) (helper t (+ depth 1))) tree))))
+  (helper tree 0))
+
 (define (display-tree tree)
   "Display a single tree"
   (format #t "~a~%" (tree->string tree)))
+
+(define (display-tree-detailed tree)
+  "Display tree with statistics"
+  (format #t "Tree: ~a~%" (tree->string tree))
+  (format #t "  Size: ~a  Height: ~a  Width: ~a  Leaves: ~a  Degree: ~a~%"
+          (tree-size tree)
+          (tree-height tree)
+          (tree-width tree)
+          (tree-leaves tree)
+          (tree-degree tree)))
 
 (define (display-trees trees)
   "Display all trees in a list"
@@ -272,6 +322,16 @@
 ;;; Examples and Demonstrations
 ;;; =============================================================================
 
+(define (demonstrate-small-trees)
+  "Show small trees with details"
+  (format #t "=== Detailed Tree Analysis ===~%~%")
+  (for-each 
+   (lambda (n)
+     (format #t "Trees with ~a node~a:~%" n (if (= n 1) "" "s"))
+     (for-each display-tree-detailed (generate-trees n))
+     (format #t "~%"))
+   (iota 5 1)))
+
 (define (demonstrate-ontogenesis)
   "Demonstrate the ontogenesis of rooted trees"
   (format #t "╔═══════════════════════════════════════════════════════════════╗~%")
@@ -299,6 +359,10 @@
       (format #t "~a\t~a~%" n count)))
   (format #t "~%")
   
+  ;; Statistics
+  (format #t "=== Tree Statistics Analysis ===~%~%")
+  (demonstrate-tree-statistics 6)
+  
   ;; Philosophical reflection
   (format #t "=== Philosophical Implications ===~%~%")
   (format #t "The enumeration reveals the explosion of organizational~%")
@@ -306,7 +370,60 @@
   (format #t "Each tree represents a unique way of recursively~%")
   (format #t "subdividing space through nested containment.~%~%")
   (format #t "This is the ontogenesis - the coming-into-being of~%")
-  (format #t "structural forms from pure distinction. 🌲✨~%"))
+  (format #t "structural forms from pure distinction. 🌲✨~%~%")
+  
+  ;; Lisp connection
+  (format #t "=== Connection to Lisp ===~%~%")
+  (format #t "Every rooted tree is an S-expression:~%")
+  (format #t "  ()       -> NIL or empty list~%")
+  (format #t "  (())     -> List containing empty list~%")
+  (format #t "  (()())   -> List with two empty lists~%~%")
+  (format #t "This is the foundation of homoiconicity:~%")
+  (format #t "Code and data share the same recursive structure! 🔄~%"))
+
+(define (demonstrate-tree-statistics n)
+  "Show statistics for trees of size n"
+  (format #t "Analyzing trees with ~a nodes:~%~%" n)
+  (let ((trees (generate-trees n)))
+    (format #t "Total count: ~a~%~%" (length trees))
+    (format #t "Height distribution:~%")
+    (let ((heights (map tree-height trees)))
+      (for-each (lambda (h)
+                  (format #t "  Height ~a: ~a trees~%"
+                          h (count (lambda (x) (= x h)) heights)))
+                (iota (+ 1 (apply max heights)) 1)))
+    (format #t "~%Width distribution:~%")
+    (let ((widths (map tree-width trees)))
+      (for-each (lambda (w)
+                  (format #t "  Width ~a: ~a trees~%"
+                          w (count (lambda (x) (= x w)) widths)))
+                (iota (+ 1 (apply max widths)) 0)))
+    (format #t "~%")))
+
+;;; =============================================================================
+;;; Interactive Utilities
+;;; =============================================================================
+
+(define (explore-tree n index)
+  "Explore a specific tree from the enumeration"
+  (let ((trees (generate-trees n)))
+    (if (or (< index 0) (>= index (length trees)))
+        (format #t "Index ~a out of range [0, ~a)~%" index (length trees))
+        (let ((tree (list-ref trees index)))
+          (format #t "Tree #~a of ~a (size ~a):~%" index (length trees) n)
+          (display-tree-detailed tree)
+          (format #t "Lisp form: ~a~%" (tree->lisp-form tree))))))
+
+(define (compare-trees t1 t2)
+  "Compare two trees and show their properties"
+  (format #t "Tree 1: ~a~%" (tree->string t1))
+  (format #t "Tree 2: ~a~%" (tree->string t2))
+  (format #t "~%")
+  (format #t "Size:     ~a  vs  ~a~%" (tree-size t1) (tree-size t2))
+  (format #t "Height:   ~a  vs  ~a~%" (tree-height t1) (tree-height t2))
+  (format #t "Width:    ~a  vs  ~a~%" (tree-width t1) (tree-width t2))
+  (format #t "Leaves:   ~a  vs  ~a~%" (tree-leaves t1) (tree-leaves t2))
+  (format #t "Equal:    ~a~%" (tree-equal? t1 t2)))
 
 ;;; =============================================================================
 ;;; Main Entry Point
