@@ -257,3 +257,81 @@ The rooted tree enumeration problem sits at the intersection of:
 The A000081 sequence is not just a list of numbers—it's a **census of possible realities** at each level of complexity. Each tree is a **unique way of organizing existence**, and the enumeration problem is the quest to know all such ways.
 
 In the context of bootstrapping Lisp from pure parentheses, the rooted trees are the **primordial forms** from which all computation emerges. They are the **atoms of structure** that, when combined recursively, give rise to the infinite complexity of programs, data, and thought itself.
+
+## Matula Numbers: The Tree-Integer Bijection
+
+The integration of Matula numbers into the roots architecture reveals an even deeper connection between structure and number.
+
+### The Fundamental Correspondence
+
+Matula numbers establish a **bijection** between rooted trees and positive integers via prime factorization:
+
+- **The Unit**: The single-vertex tree (root only) ↔ Integer 1
+- **Prime Decomposition**: Each subtree's Matula number indexes a prime in the product
+- **Recursive Structure**: Tree branching ↔ Prime factorization
+
+### The Bijection
+
+For a tree T with root having subtrees with Matula numbers m₁, m₂, ..., mₖ:
+
+```
+Matula(T) = ∏ᵢ p_{mᵢ}
+```
+
+where p_j is the j-th prime number.
+
+### Examples
+
+| Tree | Structure | Matula | Factorization |
+|:-----|:----------|:-------|:-------------|
+| `()` | Root only | 1 | 1 |
+| `(())` | Root + 1 child | 2 | p₁ |
+| `((()))` | Chain of 3 | 3 | p₂ |
+| `(() ())` | Star with 2 | 4 | p₁² |
+| `(() (()))` | Mixed | 6 | p₁ × p₂ |
+
+### Philosophical Implications
+
+The Matula bijection demonstrates that:
+
+1. **Trees and Numbers Are Dual**: The space of rooted trees is isomorphic to ℕ⁺
+2. **Structure = Factorization**: Hierarchical decomposition ≅ Prime factorization
+3. **Unity of Form**: Both emerge from recursive composition of primitives
+
+This reveals a profound truth:
+
+**The nested distinctions of Spencer-Brown's Laws of Form (trees) and the multiplicative structure of integers (primes) are two manifestations of the same underlying pattern—recursive composition.**
+
+### The Triple Isomorphism
+
+```
+Rooted Trees ≅ Positive Integers ≅ S-Expressions
+     ↓              ↓                    ↓
+Nested          Prime               List
+Distinctions    Factorization       Structure
+     ↓              ↓                    ↓
+Spencer-Brown   Number Theory        Lisp
+```
+
+### Integration with A000081
+
+The Matula bijection provides:
+- **Enumeration**: Trees can be systematically indexed by integers
+- **Canonicalization**: Each tree has a unique integer representation
+- **Computation**: Tree operations become number-theoretic operations
+
+### Computational Ontology
+
+Just as:
+- Making a distinction creates a container (tree node)
+- Multiplying primes combines structures (tree composition)
+- The unit (1) is the void marked (single vertex)
+- Primes are irreducible distinctions (fundamental trees)
+- Composites are compound distinctions (branched trees)
+
+The Matula numbers show that **counting trees is equivalent to factoring numbers**, unifying:
+- Combinatorics (tree enumeration)
+- Number theory (prime factorization)
+- Computation (recursive structure)
+
+For detailed information, see [MATULA_NUMBERS.md](../MATULA_NUMBERS.md).
